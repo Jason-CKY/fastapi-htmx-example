@@ -1,0 +1,26 @@
+import os
+import sys
+from loguru import logger
+from pydantic_settings import BaseSettings
+
+
+class Settings(BaseSettings):
+    app_name: str = "FastAPI htmx server"
+    app_description: str = "htmx web server written in FastAPI"
+    app_version: str = os.getenv("APP_VERSION", "0.0.1")
+    log_level: str = os.getenv("LOG_LEVEL", "DEBUG")
+
+    swagger_js_url: str = os.getenv(
+        "SWAGGER_JS_URL",
+        "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"
+    )
+    swagger_css_url: str = os.getenv(
+        "SWAGGER_CSS_URL",
+        "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css"
+    )
+
+
+settings = Settings()
+
+logger.remove()
+logger.add(sys.stdout, level=settings.log_level)

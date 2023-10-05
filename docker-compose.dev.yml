@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+
+  htmx-server:
+    build:
+      context: .
+      dockerfile: ./build/Dockerfile
+      target: dev
+    container_name: htmx
+    ports:
+      - 8000:80
+    volumes:
+      - ./app:/app/app
+
