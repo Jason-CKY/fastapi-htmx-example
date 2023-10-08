@@ -8,16 +8,52 @@
 <body>
     <div class="flex-col">
         <h1 class="text-3xl font-bold underline mb-2">
-            Hello World
+            My To-Do App
         </h1>
-        <button 
-            class="text-white bg-blue-500 hover:brightness-90 active:brightness-90 active:scale-[95%] font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2" 
-            hx-post="/clicked"
-            hx-trigger="click" 
-            hx-swap="outerHTML"
-        >
-            Click Me
-        </button>
+        <div>
+            <input 
+                placeholder="Enter a new to-do..."
+                hx-post="/update_todo"
+                hx-trigger="change"
+                hx-swap="outerHTML"
+                hx-indicator="#button-spinner"
+            />
+            <button 
+                class="text-white bg-blue-500 hover:brightness-90 active:brightness-90 active:scale-[95%] font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2" 
+                hx-post="/update_todo"
+                hx-trigger="click" 
+                hx-swap="outerHTML"
+                hx-indicator="#button-spinner"
+            >
+                Click Me
+            </button>
+            <svg id="button-spinner" class="htmx-indicator inline-block h-4 w-4 border-2 animate-spin rounded-full border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+            </svg>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <td>
+                        No.
+                    </td>
+                    <td>
+                        To-Do
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        1
+                    </td>
+                    <td>
+                        Walk the dog
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
     </div>
 
 </body>
