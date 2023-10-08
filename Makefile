@@ -13,6 +13,14 @@ lint:			## Lint check
 	--style '{based_on_style: pep8, dedent_closing_brackets: true, coalesce_brackets: true}' \
 	--no-local-style --verbose --recursive --diff --parallel app
 
+.PHONY: build-css
+build-css:		## use tailwind cli to build out output css
+	tailwindcss -i ./build/input.css -o ./app/static/output.css
+
+.PHONY: watch-css
+watch-css: 		## set css build into watch mode for development
+	tailwindcss -i ./build/input.css -o ./app/static/output.css --watch
+
 .PHONY: format
 format:			## Format code in place to conform to lint check
 	docker run --rm -v $(PWD):/src:Z \
@@ -27,7 +35,7 @@ pyflakes:		## Pyflakes check for any unused variables/classes
 	/bin/bash -c "pip install --upgrade pyflakes && python -m pyflakes /src && echo 'pyflakes passed!'"
 
 .PHONY: build-dev
-build-dev:		## rebuild all the images in the docker-compose file
+build-dev:	build-css	## rebuild all the images in the docker-compose file
 	docker-compose -f docker-compose.dev.yml up --build -d
 
 .PHONY: start-dev
@@ -43,11 +51,11 @@ destroy-dev:		## Bring down all hosted services with their volumes
 	docker-compose -f docker-compose.dev.yml down -v
 
 .PHONY: build
-build:		## rebuild all the images in the docker-compose file
+build:	build-css	## rebuild all the images in the docker-compose file
 	docker-compose up --build -d
 
 .PHONY: start
-start:		## deploy app
+start:	build-css	## deploy app
 	docker-compose up -d
 
 .PHONY: stop

@@ -8,4 +8,11 @@ router = APIRouter()
 @router.get("/", response_class=HTMLResponse)
 async def home_page(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-    return "<h1>Hello World</h1>"
+
+
+@router.post("/clicked", response_class=HTMLResponse)
+async def home_page(request: Request):
+    return """
+<h2>tset</h2>
+"""
+    return templates.TemplateResponse("index.html", {"request": request})

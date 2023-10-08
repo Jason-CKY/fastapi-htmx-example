@@ -2,10 +2,16 @@
 <head>
     <title>To-do App</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.png">
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link href="/static/output.css" rel="stylesheet">
 </head>
 <body>
-    <h1>
+    <h1 class="text-3xl font-bold underline">
         Hello World
     </h1>
+    <button hx-post="/clicked" hx-swap="outerHTML">
+        Click Me
+    </button>
 </body>
 </html>

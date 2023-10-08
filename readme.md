@@ -1,11 +1,11 @@
 # FastAPI htmx server
 
-## Quickstart
+## Quickstart (development mode)
 
 You can either start up using `docker-compose`:
 
 ```sh
-docker-compose up -d
+make build-dev
 ```
 
 Or you can install from source:
