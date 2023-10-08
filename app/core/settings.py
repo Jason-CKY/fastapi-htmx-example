@@ -3,7 +3,8 @@ import sys
 from loguru import logger
 from pathlib import Path
 from pydantic_settings import BaseSettings
-from fastapi.templating import Jinja2Templates
+# from fastapi.templating import Jinja2Templates
+from jinja2_fragments.fastapi import Jinja2Blocks
 
 
 class Settings(BaseSettings):
@@ -23,9 +24,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-templates = Jinja2Templates(
-    directory=Path(__file__).parent.parent / "templates"
-)
+templates = Jinja2Blocks(directory=Path(__file__).parent.parent / "templates")
 
 logger.remove()
 logger.add(sys.stdout, level=settings.log_level)
