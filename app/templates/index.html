@@ -13,7 +13,7 @@
         <input 
             name="todo"
             placeholder="Enter a new to-do..."
-            hx-post="/todo"
+            hx-post="/htmx/todo"
             hx-trigger="change"
             hx-target="#todo-body"
             hx-swap="innerHTML"
@@ -23,14 +23,14 @@
         />
         <button 
             class="text-white bg-blue-500 disabled:cursor-not-allowed disabled:scale-[100%] disabled:brightness-90 hover:brightness-90 active:brightness-90 active:scale-[95%] font-medium rounded-full text-sm px-5 py-2.5 text-center" 
-            hx-get="/todo"
+            hx-post="/htmx/todo"
             hx-trigger="click" 
             hx-target="#todo-body"
             hx-swap="innerHTML"
             hx-indicator="#button-spinner"
             hx-disabled-elt="this"
         >
-            Refresh
+            Submit
             <svg id="button-spinner" class="htmx-indicator my-indicator mx-2 inline-block h-4 w-4 border-2 animate-spin rounded-full border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
             </svg>
@@ -50,6 +50,7 @@
                 <tr>
                     <td class="border border-slate-700">{{ todo.id }}</td>
                     <td class="border border-slate-700">{{ todo.todo }}</td>
+                    <td class="border border-slate-700">test</td>
                 </tr>
             {% endfor %}
             {% endblock %}
