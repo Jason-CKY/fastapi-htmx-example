@@ -11,11 +11,7 @@ router = APIRouter()
 async def home_page(request: Request):
     todos = get_todos()
     return templates.TemplateResponse(
-        "index.html", {
-            "request": request,
-            "num_todos": len(todos),
-            "todos": todos
-        }
+        "index.html", {"request": request, "num_todos": len(todos), "todos": todos}
     )
 
 
@@ -23,12 +19,9 @@ async def home_page(request: Request):
 async def todo_fragment(request: Request):
     todos = get_todos()
     return templates.TemplateResponse(
-        "index.html", {
-            "request": request,
-            "num_todos": len(todos),
-            "todos": todos
-        },
-        block_name="content"
+        "index.html",
+        {"request": request, "num_todos": len(todos), "todos": todos},
+        block_name="content",
     )
 
 
@@ -37,12 +30,9 @@ async def create_todo_fragment(request: Request, todo: Annotated[str, Form()]):
     todos = get_todos()
     create_todo(todo)
     return templates.TemplateResponse(
-        "index.html", {
-            "request": request,
-            "num_todos": len(todos),
-            "todos": todos
-        },
-        block_name="content"
+        "index.html",
+        {"request": request, "num_todos": len(todos), "todos": todos},
+        block_name="content",
     )
 
 
