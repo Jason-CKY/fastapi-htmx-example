@@ -9,34 +9,28 @@
     <h1 class="text-3xl font-bold underline mb-2">
         My To-Do App
     </h1>
-    <div>
+    <form
+        hx-post="/htmx/todo"
+        hx-target="#todo-body"
+        hx-swap="innerHTML"
+        hx-indicator="#button-spinner"
+        hx-on:htmx:before-request="this.button.disabled='true'; this.todo.disabled='true'"
+        hx-on:htmx:after-request="this.todo.value=''; this.button.disabled=''; this.todo.disabled=''"
+    >
         <input 
             name="todo"
-            placeholder="Enter a new to-do..."
-            hx-post="/htmx/todo"
-            hx-trigger="change"
-            hx-target="#todo-body"
-            hx-swap="innerHTML"
-            hx-indicator="#button-spinner"
-            hx-disabled-elt="this"
-            hx-on:htmx:after-request="this.value=''"
+            placeholder="Enter a new to-do..."            
         />
         <button 
+            name="button"
             class="text-white bg-blue-500 disabled:cursor-not-allowed disabled:scale-[100%] disabled:brightness-90 hover:brightness-90 active:brightness-90 active:scale-[95%] font-medium rounded-full text-sm px-5 py-2.5 text-center" 
-            hx-post="/htmx/todo"
-            hx-trigger="click" 
-            hx-target="#todo-body"
-            hx-swap="innerHTML"
-            hx-indicator="#button-spinner"
-            hx-disabled-elt="this"
         >
             Submit
             <svg id="button-spinner" class="htmx-indicator my-indicator mx-2 inline-block h-4 w-4 border-2 animate-spin rounded-full border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
             </svg>
         </button>
-
-    </div>
+    </form>
     <table class="border-collapse border border-slate-500 ...">
         <thead>
             <tr>
@@ -44,13 +38,21 @@
             <th class="border border-slate-600 ...">To-do</th>
             </tr>
         </thead>
-        <tbody id="todo-body">
+        <tbody id="todo-body" hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
             {% block content %}
-            {% for todo in todos %}
+            {% for i in range(num_todos) %}
                 <tr>
-                    <td class="border border-slate-700">{{ todo.id }}</td>
-                    <td class="border border-slate-700">{{ todo.todo }}</td>
-                    <td class="border border-slate-700">test</td>
+                    <td class="border border-slate-700">{{ i+1 }}</td>
+                    <td class="border border-slate-700">{{ todos[i].name }}</td>
+                    <td class="border border-slate-700">
+                        <div 
+                            class="cursor-pointer"
+                            hx-delete="/htmx/todo/{{ i+1 }}"
+                            hx-trigger="click"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12Z"/></svg>
+                        </div>
+                    </td>
                 </tr>
             {% endfor %}
             {% endblock %}

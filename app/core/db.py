@@ -1,15 +1,20 @@
-todos = [
-    "Walk the dog",
-    "Buy groceries",
-    "Wash the car",
-]
+todos = [{
+    "name": "Walk the dog"
+}, {
+    "name": "buy groceries"
+}, {
+    "name": "wash the car"
+}]
 
 
 def get_todos():
-    _todos = []
-    for i in range(len(todos)):
-        _todos.append({"id": i + 1, "todo": todos[i]})
-    return _todos
+    return todos
+
 
 def create_todo(todo: str):
-    todos.append(todo)
+    todos.append({"name": todo})
+
+
+def delete_todo(id: int):
+    todos.remove(todos[id - 1])
+    return todos
