@@ -10,8 +10,22 @@ router = APIRouter()
 @router.get("/", response_class=HTMLResponse)
 async def home_page(request: Request):
     todos = get_todos()
+    backlog, inProgress, done = [], [], []
+    for todo in todos:
+        if todo["status"] == "backlog":
+            backlog.append(todo)
+        elif todo["status"] == "in-progress":
+            inProgress.append(todo)
+        else:
+            done.append(todo)
     return templates.TemplateResponse(
-        "index.html", {"request": request, "num_todos": len(todos), "todos": todos}
+        "index.html",
+        {
+            "request": request,
+            "backlog": backlog,
+            "inProgress": inProgress,
+            "done": done,
+        },
     )
 
 
@@ -20,7 +34,7 @@ async def todo_fragment(request: Request):
     todos = get_todos()
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "num_todos": len(todos), "todos": todos},
+        {"request": request},
         block_name="content",
     )
 
@@ -31,7 +45,7 @@ async def create_todo_fragment(request: Request, todo: Annotated[str, Form()]):
     create_todo(todo)
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "num_todos": len(todos), "todos": todos},
+        {"request": request},
         block_name="content",
     )
 

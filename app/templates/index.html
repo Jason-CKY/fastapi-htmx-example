@@ -26,80 +26,7 @@
       />
     </div>
 
-    <div id="temporary" class="my-2">
-      <form
-        hx-post="/htmx/todo"
-        hx-target="#todo-body"
-        hx-swap="innerHTML"
-        hx-indicator="#button-spinner"
-        hx-on:htmx:before-request="this.button.disabled='true'; this.todo.disabled='true'"
-        hx-on:htmx:after-request="this.todo.value='';  this.button.disabled=''; this.todo.disabled=''"
-      >
-        <input name="todo" placeholder="Enter a new to-do..." />
-        <button
-          name="button"
-          class="rounded-full bg-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:brightness-90 active:scale-[95%] active:brightness-90 disabled:scale-[100%] disabled:cursor-not-allowed disabled:brightness-90"
-        >
-          Submit
-          <svg
-            id="button-spinner"
-            class="htmx-indicator my-indicator mx-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-            viewBox="0 0 50 50"
-          >
-            <circle
-              class="path"
-              cx="25"
-              cy="25"
-              r="20"
-              fill="none"
-              stroke-width="5"
-            ></circle>
-          </svg>
-        </button>
-      </form>
-      <table class="... border-collapse border border-slate-500">
-        <thead>
-          <tr>
-            <th class="... border border-slate-600">No.</th>
-            <th class="... border border-slate-600">To-do</th>
-          </tr>
-        </thead>
-        <tbody
-          id="todo-body"
-          hx-confirm="Are you sure?"
-          hx-target="closest tr"
-          hx-swap="outerHTML swap:1s"
-        >
-          {% block content %} {% for i in range(num_todos) %}
-          <tr>
-            <td class="border border-slate-700">{{ i+1 }}</td>
-            <td class="border border-slate-700">{{ todos[i].name }}</td>
-            <td class="border border-slate-700">
-              <div
-                class="cursor-pointer"
-                hx-delete="/htmx/todo/{{ i+1 }}"
-                hx-trigger="click"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12Z"
-                  />
-                </svg>
-              </div>
-            </td>
-          </tr>
-          {% endfor %} {% endblock %}
-        </tbody>
-      </table>
-    </div>
-
-    <div class="flex w-full">
+    <div class="mt-5 flex w-full">
       <div class="card rounded-box grid w-[30%] bg-base-300 p-2">
         <div class="mx-2 flex flex-col">
           <div class="flex items-center justify-between">
@@ -123,14 +50,18 @@
               </g>
             </svg>
           </div>
-          <div class="card w-[80%] place-self-center bg-base-100 shadow-xl">
+          {% for todo in backlog %}
+          <div
+            class="card my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+          >
             <div class="card-body">
               <article class="prose">
-                <h2 class="card-title">Shoes!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <h2 class="card-title">{{ todo.title }}</h2>
+                <p>{{ todo.description }}</p>
               </article>
             </div>
           </div>
+          {% endfor %}
         </div>
       </div>
 
@@ -140,7 +71,7 @@
         <div class="mx-2 flex flex-col">
           <div class="flex items-center justify-between">
             <article class="prose mb-5">
-              <h1>To-Do</h1>
+              <h1>In-Progress</h1>
             </article>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -159,14 +90,18 @@
               </g>
             </svg>
           </div>
-          <div class="card w-[80%] place-self-center bg-base-100 shadow-xl">
+          {% for todo in inProgress %}
+          <div
+            class="card my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+          >
             <div class="card-body">
               <article class="prose">
-                <h2 class="card-title">Shoes!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <h2 class="card-title">{{ todo.title }}</h2>
+                <p>{{ todo.description }}</p>
               </article>
             </div>
           </div>
+          {% endfor %}
         </div>
       </div>
 
@@ -195,14 +130,18 @@
               </g>
             </svg>
           </div>
-          <div class="card w-[80%] place-self-center bg-base-100 shadow-xl">
+          {% for todo in done %}
+          <div
+            class="card my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+          >
             <div class="card-body">
               <article class="prose">
-                <h2 class="card-title">Shoes!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <h2 class="card-title">{{ todo.title }}</h2>
+                <p>{{ todo.description }}</p>
               </article>
             </div>
           </div>
+          {% endfor %}
         </div>
       </div>
     </div>
