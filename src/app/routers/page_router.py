@@ -2,19 +2,19 @@ from typing import Annotated
 from fastapi import APIRouter, Request, Form, Response, status
 from fastapi.responses import HTMLResponse
 from app.core.settings import templates
-from app.core.db import get_todos, create_todo, delete_todo
+from app.core.db import get_tasks
 
 router = APIRouter()
 
 
 @router.get("/", response_class=HTMLResponse)
 async def home_page(request: Request):
-    todos = get_todos()
+    todos = await get_tasks()
     backlog, inProgress, done = [], [], []
     for todo in todos:
-        if todo["status"] == "backlog":
+        if todo.status == "backlog":
             backlog.append(todo)
-        elif todo["status"] == "progress":
+        elif todo.status == "progress":
             inProgress.append(todo)
         else:
             done.append(todo)
@@ -31,7 +31,7 @@ async def home_page(request: Request):
 
 @router.get("/htmx/todo", response_class=HTMLResponse)
 async def todo_fragment(request: Request):
-    todos = get_todos()
+    todos = get_tasks()
     return templates.TemplateResponse(
         "index.html",
         {"request": request},
@@ -41,8 +41,8 @@ async def todo_fragment(request: Request):
 
 @router.post("/htmx/todo", response_class=HTMLResponse)
 async def create_todo_fragment(request: Request, todo: Annotated[str, Form()]):
-    todos = get_todos()
-    create_todo(todo)
+    todos = get_tasks()
+    # create_todo(todo)
     return templates.TemplateResponse(
         "index.html",
         {"request": request},
@@ -52,5 +52,5 @@ async def create_todo_fragment(request: Request, todo: Annotated[str, Form()]):
 
 @router.delete("/htmx/todo/{id}")
 async def delete_todo_fragment(request: Request, id: int):
-    delete_todo(id)
+    # delete_todo(id)
     return Response(status_code=status.HTTP_200_OK)
