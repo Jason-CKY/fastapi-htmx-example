@@ -8,6 +8,9 @@ services:
       dockerfile: ./build/fastapi/Dockerfile
       target: dev
     container_name: htmx
+    environment:
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
     ports:
       - 8000:80
     volumes:

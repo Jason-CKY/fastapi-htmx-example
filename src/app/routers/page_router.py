@@ -14,7 +14,7 @@ async def home_page(request: Request):
     for todo in todos:
         if todo["status"] == "backlog":
             backlog.append(todo)
-        elif todo["status"] == "in-progress":
+        elif todo["status"] == "progress":
             inProgress.append(todo)
         else:
             done.append(todo)

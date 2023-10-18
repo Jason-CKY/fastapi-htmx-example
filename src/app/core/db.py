@@ -30,19 +30,19 @@ todos = [
         "id": 4,
         "title": "test4",
         "description": "test description 1",
-        "status": "in-progress",
+        "status": "progress",
     },
     {
         "id": 5,
         "title": "test5",
         "description": "test description 2",
-        "status": "in-progress",
+        "status": "progress",
     },
     {
         "id": 6,
         "title": "test6",
         "description": "test description 3",
-        "status": "in-progress",
+        "status": "progress",
     },
     {
         "id": 7,
