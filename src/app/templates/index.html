@@ -12,18 +12,22 @@
       <article class="prose">
         <h1 class="underline">My To-Do App</h1>
       </article>
-      <input
-        id="theme-toggle"
-        type="checkbox"
-        class="toggle"
-        data-toggle-theme="garden,dracula"
-        data-act-class="ACTIVECLASS"
-        _="on load js 
+      <div class="flex place-items-center">
+        🌞
+        <input
+          id="theme-toggle"
+          type="checkbox"
+          class="toggle mx-1"
+          data-toggle-theme="garden,dracula"
+          data-act-class="pl-4"
+          _="on load js 
             toggleButton = document.getElementById('theme-toggle');
             htmlElement = document.getElementById('webpage');
             toggleButton.checked = htmlElement.getAttribute('data-theme') === 'dracula';
             "
-      />
+        />
+        🌚
+      </div>
     </div>
 
     <div class="mt-5 flex w-full">
