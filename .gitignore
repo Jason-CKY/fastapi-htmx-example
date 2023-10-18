@@ -1,4 +1,6 @@
 .vscode
 __pycache__
-app/static/output.css
+src/app/static/output.css
 node_modules
+
+src/pb/pb_data

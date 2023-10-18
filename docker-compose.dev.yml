@@ -5,11 +5,20 @@ services:
   htmx-server:
     build:
       context: .
-      dockerfile: ./build/Dockerfile
+      dockerfile: ./build/fastapi/Dockerfile
       target: dev
     container_name: htmx
     ports:
       - 8000:80
     volumes:
-      - ./app:/app/app
+      - ./src/app:/app/app
 
+  pocketbase:
+    build:
+      context: .
+      dockerfile: ./build/pocketbase/Dockerfile
+    container_name: pocketbase
+    volumes:
+      - ./src/pb:/app/data
+    ports:
+      - "8090:8090"
