@@ -25,5 +25,6 @@ services:
     volumes:
       - ./src/pb/pb_migrations:/app/data/pb_migrations
       - ./src/pb/pb_public:/app/data/pb_public
+      - ./src/pb/pb_data:/app/data/pb_data
     ports:
       - "8090:8090"
