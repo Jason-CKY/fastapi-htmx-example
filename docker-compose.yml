@@ -9,8 +9,9 @@ services:
       target: production
     container_name: htmx
     environment:
-      ADMIN_USERNAME: ${ADMIN_USERNAME}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      PB_HOST: ${PB_HOST}
+      PB_ADMIN_USERNAME: ${PB_ADMIN_USERNAME}
+      PB_ADMIN_PASSWORD: ${PB_ADMIN_PASSWORD}
     ports:
       - 8000:80
 
@@ -20,6 +21,12 @@ services:
       dockerfile: ./build/pocketbase/Dockerfile
     container_name: pocketbase
     volumes:
-      - ./src/pb:/app/data
+      - ./src/pb/pb_migrations:/app/data/pb_migrations
+      - ./src/pb/pb_public:/app/data/pb_public
+      - pocketbase-volume:/app/data/pb_data
     ports:
       - "8090:8090"
+
+volumes:
+  pocketbase-volume:
+    name: pocketbase-volume

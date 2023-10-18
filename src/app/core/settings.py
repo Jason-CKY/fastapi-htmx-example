@@ -3,6 +3,7 @@ import sys
 from loguru import logger
 from pathlib import Path
 from pydantic_settings import BaseSettings
+
 # from fastapi.templating import Jinja2Templates
 from jinja2_fragments.fastapi import Jinja2Blocks
 
@@ -15,12 +16,16 @@ class Settings(BaseSettings):
 
     swagger_js_url: str = os.getenv(
         "SWAGGER_JS_URL",
-        "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"
+        "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
     )
     swagger_css_url: str = os.getenv(
         "SWAGGER_CSS_URL",
-        "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css"
+        "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css",
     )
+
+    pb_host: str
+    pb_admin_username: str
+    pb_admin_password: str
 
 
 settings = Settings()
