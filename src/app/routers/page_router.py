@@ -2,22 +2,24 @@ from typing import Annotated
 from fastapi import APIRouter, Request, Form, Response, status
 from fastapi.responses import HTMLResponse
 from app.core.settings import templates
-from app.core.db import get_tasks
+from app.core.db import get_tasks, create_task
+import shortuuid
+
 
 router = APIRouter()
 
 
 @router.get("/", response_class=HTMLResponse)
 async def home_page(request: Request):
-    todos = await get_tasks()
+    tasks = await get_tasks()
     backlog, inProgress, done = [], [], []
-    for todo in todos:
-        if todo.status == "backlog":
-            backlog.append(todo)
-        elif todo.status == "progress":
-            inProgress.append(todo)
+    for task in tasks:
+        if task.status == "backlog":
+            backlog.append(task)
+        elif task.status == "progress":
+            inProgress.append(task)
         else:
-            done.append(todo)
+            done.append(task)
     return templates.TemplateResponse(
         "index.html",
         {
@@ -29,25 +31,31 @@ async def home_page(request: Request):
     )
 
 
-@router.post("/htmx/todo/backlog", response_class=HTMLResponse)
-async def create_todo_fragment(request: Request):
+@router.post("/htmx/task", response_class=HTMLResponse)
+async def create_task_fragment(request: Request):
     return templates.TemplateResponse(
-        "components/task.html",
-        {"request": request, "title": "EMPTY", "description": "FILL IN"},
+        "components/edit_task.html",
+        {
+            "request": request,
+            "id": shortuuid.random(length=15),
+        },
     )
 
 
-@router.post("/htmx/todo/progress", response_class=HTMLResponse)
-async def create_todo_fragment(request: Request):
+@router.put("/htmx/task/{id}", response_class=HTMLResponse)
+async def update_task_fragment(request: Request, id: str):
+    task = await create_task(
+        title="backend test title",
+        description="backend_test_title",
+        status="progress",
+        id=id,
+    )
     return templates.TemplateResponse(
-        "components/task.html",
-        {"request": request, "title": "test", "description": "FILL IN"},
+        "components/new_task.html",
+        {"request": request, "task": task},
     )
 
 
-@router.post("/htmx/todo/done", response_class=HTMLResponse)
-async def create_todo_fragment(request: Request):
-    return templates.TemplateResponse(
-        "components/task_done.html",
-        {"request": request, "title": "TEST", "description": "FILL IN"},
-    )
+@router.delete("/htmx/task/{id}", response_class=HTMLResponse)
+async def delete_task_fragment(request: Request, id: str):
+    return ""

@@ -3,13 +3,20 @@ from pydantic import BaseModel
 from fastapi import HTTPException, status
 from app.core.settings import settings
 import httpx
+from enum import Enum
+
+
+class TaskStatus(str, Enum):
+    BACKLOG = "backlog"
+    PROGRESS = "progress"
+    DONE = "done"
 
 
 class Task(BaseModel):
     id: str
     title: str
     description: str
-    status: str
+    status: TaskStatus
 
 
 async def get_tasks() -> List[Task]:
@@ -33,3 +40,14 @@ async def get_tasks() -> List[Task]:
         )
         tasks.append(task)
     return tasks
+
+
+async def delete_task(id: str) -> None:
+    pass
+
+
+async def create_task(
+    title: str, description: str, status: TaskStatus, id: str = None
+) -> Task:
+    task = Task(id=id, title=title, description=description, status=status)
+    return task

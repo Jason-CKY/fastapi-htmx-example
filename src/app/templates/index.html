@@ -43,29 +43,36 @@
               icon="icon-park-outline:add"
               width="30"
               height="30"
-              hx-post="/htmx/todo/backlog"
+              hx-post="/htmx/task"
               hx-target="#backlog-list"
               hx-swap="afterbegin"
             ></iconify-icon>
           </div>
           <div id="backlog-list" class="flex flex-col items-center">
-            {% for todo in backlog %}
+            {% for task in backlog %}
             <div
+              id="card-{{ task.id }}"
               class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
             >
               <div class="card-body">
                 <article class="prose">
                   <h2 class="card-title justify-between">
                     <div>
-                      <iconify-icon class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90" icon="iconamoon:edit-duotone"></iconify-icon>
-                      {{ todo.title }}
+                      <iconify-icon
+                       class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+                       icon="iconamoon:edit-duotone"
+                       hx-put="/htmx/task/{{ task.id }}"
+                       hx-target="#card-{{ task.id }}"
+                       hx-swap="outerHTML"
+                      ></iconify-icon>
+                      {{ task.title }}
                     </div>
                     <iconify-icon
                     class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
                     icon="material-symbols:delete-outline"
                     ></iconify-icon>
                   </h2>  
-                  <p>{{ todo.description }}</p>
+                  <p>{{ task.description }}</p>
                 </article>  
               </div>
             </div>
@@ -87,29 +94,36 @@
               icon="icon-park-outline:add"
               width="30"
               height="30"
-              hx-post="/htmx/todo/progress"
+              hx-post="/htmx/task"
               hx-target="#progress-list"
               hx-swap="afterbegin"
             ></iconify-icon>
           </div>
           <div id="progress-list" class="flex flex-col items-center ">
-            {% for todo in inProgress %}
+            {% for task in inProgress %}
             <div
+              id="card-{{ task.id }}"
               class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
             >
               <div class="card-body">
                 <article class="prose">
                   <h2 class="card-title justify-between">
                     <div>
-                      <iconify-icon class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90" icon="iconamoon:edit-duotone"></iconify-icon>
-                      {{ todo.title }}
+                      <iconify-icon
+                       class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+                       icon="iconamoon:edit-duotone"
+                       hx-put="/htmx/task/{{ task.id }}"
+                       hx-target="#card-{{ task.id }}"
+                       hx-swap="outerHTML"
+                      ></iconify-icon>
+                      {{ task.title }}
                     </div>
                     <iconify-icon
                     class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
                     icon="material-symbols:delete-outline"
                     ></iconify-icon>
                   </h2>  
-                  <p>{{ todo.description }}</p>
+                  <p>{{ task.description }}</p>
                 </article>  
               </div>
             </div>
@@ -131,30 +145,37 @@
               icon="icon-park-outline:add"
               width="30"
               height="30"
-              hx-post="/htmx/todo/done"
+              hx-post="/htmx/task"
               hx-target="#done-list"
               hx-swap="afterbegin"
             ></iconify-icon>
             </svg>
           </div>
           <div id="done-list" class="flex flex-col items-center ">
-            {% for todo in done %}
+            {% for task in done %}
             <div
+              id="card-{{ task.id }}"
               class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
             >
               <div class="card-body">
                 <article class="prose">
                   <h2 class="card-title justify-between line-through">
                     <div>
-                      <iconify-icon class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90" icon="iconamoon:edit-duotone"></iconify-icon>
-                      {{ todo.title }}
+                      <iconify-icon
+                      class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+                      icon="iconamoon:edit-duotone"
+                      hx-put="/htmx/task/{{ task.id }}"
+                      hx-target="#card-{{ task.id }}"
+                      hx-swap="outerHTML"
+                     ></iconify-icon>
+                      {{ task.title }}
                     </div>
                     <iconify-icon
                     class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
                     icon="material-symbols:delete-outline"
                     ></iconify-icon>
                   </h2>  
-                  <p class="line-through">{{ todo.description }}</p>
+                  <p class="line-through">{{ task.description }}</p>
                 </article>  
               </div>
             </div>

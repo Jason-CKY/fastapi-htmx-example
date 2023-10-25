@@ -1,22 +1,26 @@
 <div
+  id="card-{{ task.id }}"
   class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
 >
   <div class="card-body">
     <article class="prose">
-      <h2 class="card-title justify-between line-through">
+      <h2 class="card-title justify-between">
         <div>
           <iconify-icon
             class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
             icon="iconamoon:edit-duotone"
+            hx-put="/htmx/task/{{ task.id }}"
+            hx-target="#card-{{ task.id }}"
+            hx-swap="outerHTML"
           ></iconify-icon>
-          {{ title }}
+          {{ task.title }}
         </div>
         <iconify-icon
           class="hidden cursor-pointer place-self-start hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
           icon="material-symbols:delete-outline"
         ></iconify-icon>
       </h2>
-      <p class="line-through">{{ description }}</p>
+      <p>{{ task.description }}</p>
     </article>
   </div>
 </div>

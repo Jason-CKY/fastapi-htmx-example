@@ -1,0 +1,42 @@
+<div
+  id="card-{{ id }}"
+  class="card-compact group relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+>
+  <div class="card-body">
+    <form>
+      <div class="card-title justify-between">
+        <input
+          class="w-3/4"
+          type="text"
+          name="title"
+          placeholder="Enter Task Title..."
+          autofocus
+        />
+        <div class="flex w-1/4 justify-end">
+          <iconify-icon
+            class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+            hx-delete="/htmx/task/{{ id }}"
+            hx-target="#card-{{ id }}"
+            hx-swap="outerHTML"
+            style="color: red"
+            icon="iconoir:cancel"
+          ></iconify-icon>
+          <iconify-icon
+            class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+            hx-put="/htmx/task/{{ id }}"
+            hx-target="#card-{{ id }}"
+            hx-swap="outerHTML"
+            style="color: #4aed80"
+            icon="line-md:confirm"
+          ></iconify-icon>
+        </div>
+      </div>
+      <input
+        class="w-[100%]"
+        type="text"
+        name="description"
+        placeholder="Enter Task Description..."
+      />
+    </form>
+  </div>
+</div>
