@@ -71,7 +71,7 @@ async def update_task_fragment(
     status: Annotated[TaskStatus, Form()],
 ):
     try:
-        task = await get_task_by_id(id)
+        _ = await get_task_by_id(id)
     except HTTPException as e:
         if e.status_code == 404:
             updated_task = await create_task(
