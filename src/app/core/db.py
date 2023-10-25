@@ -2,7 +2,7 @@ from typing import List
 from fastapi import HTTPException, status
 from app.core.settings import settings
 import httpx
-
+from loguru import logger
 from app.schemas.tasks import Task, TaskStatus
 
 
@@ -30,11 +30,39 @@ async def get_tasks() -> List[Task]:
 
 
 async def delete_task(id: str) -> None:
-    pass
+    async with httpx.AsyncClient() as client:
+        r = await client.delete(f"{settings.pb_host}/api/collections/task/records/{id}")
+    if r.status_code == 404:
+        return None
+    elif r.status_code != 204:
+        logger.critical(r.text)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
+        )
 
 
 async def create_task(
     title: str, description: str, status: TaskStatus, id: str = None
 ) -> Task:
-    task = Task(id=id, title=title, description=description, status=status)
+    async with httpx.AsyncClient() as client:
+        r = await client.post(
+            f"{settings.pb_host}/api/collections/task/records",
+            json={
+                "id": id,
+                "title": title,
+                "description": description,
+                "status": status,
+            },
+        )
+    if r.status_code != 200:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
+        )
+    response = r.json()
+    task = Task(
+        id=response["id"],
+        title=response["title"],
+        description=response["description"],
+        status=response["status"],
+    )
     return task

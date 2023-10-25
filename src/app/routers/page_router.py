@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import HTMLResponse
 from app.core.settings import templates
-from app.core.db import get_tasks, create_task
+from app.core.db import get_tasks, create_task, delete_task
 from app.schemas.tasks import TaskStatus
 from loguru import logger
 import shortuuid
@@ -63,4 +63,5 @@ async def update_task_fragment(
 
 @router.delete("/htmx/task/{id}", response_class=HTMLResponse)
 async def delete_task_fragment(request: Request, id: str):
+    await delete_task(id)
     return ""

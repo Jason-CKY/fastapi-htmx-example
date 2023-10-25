@@ -70,6 +70,9 @@
                     <iconify-icon
                     class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
                     icon="material-symbols:delete-outline"
+                    hx-delete="/htmx/task/{{ task.id }}"
+                    hx-target="#card-{{ task.id }}"
+                    hx-swap="outerHTML"
                     ></iconify-icon>
                   </h2>  
                   <p>{{ task.description }}</p>
@@ -121,6 +124,9 @@
                     <iconify-icon
                     class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
                     icon="material-symbols:delete-outline"
+                    hx-delete="/htmx/task/{{ task.id }}"
+                    hx-target="#card-{{ task.id }}"
+                    hx-swap="outerHTML"
                     ></iconify-icon>
                   </h2>  
                   <p>{{ task.description }}</p>
@@ -173,6 +179,9 @@
                     <iconify-icon
                     class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
                     icon="material-symbols:delete-outline"
+                    hx-delete="/htmx/task/{{ task.id }}"
+                    hx-target="#card-{{ task.id }}"
+                    hx-swap="outerHTML"
                     ></iconify-icon>
                   </h2>  
                   <p class="line-through">{{ task.description }}</p>
