@@ -1,9 +1,16 @@
 <div
   id="card-{{ id }}"
-  class="card-compact group relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+  class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
 >
   <div class="card-body">
-    <form>
+    <form
+      hx-put="/htmx/task/{{ id }}"
+      hx-target="#card-{{ id }}"
+      hx-swap="outerHTML"
+    >
+      <select name="status" class="hidden">
+        <option selected>{{ status }}</option>
+      </select>
       <div class="card-title justify-between">
         <input
           class="w-3/4"
@@ -11,6 +18,7 @@
           name="title"
           placeholder="Enter Task Title..."
           autofocus
+          required
         />
         <div class="flex w-1/4 justify-end">
           <iconify-icon
@@ -21,14 +29,13 @@
             style="color: red"
             icon="iconoir:cancel"
           ></iconify-icon>
-          <iconify-icon
-            class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
-            hx-put="/htmx/task/{{ id }}"
-            hx-target="#card-{{ id }}"
-            hx-swap="outerHTML"
-            style="color: #4aed80"
-            icon="line-md:confirm"
-          ></iconify-icon>
+          <button>
+            <iconify-icon
+              class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+              style="color: #4aed80"
+              icon="line-md:confirm"
+            ></iconify-icon>
+          </button>
         </div>
       </div>
       <input
@@ -36,6 +43,7 @@
         type="text"
         name="description"
         placeholder="Enter Task Description..."
+        required
       />
     </form>
   </div>

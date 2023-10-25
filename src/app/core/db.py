@@ -1,22 +1,9 @@
 from typing import List
-from pydantic import BaseModel
 from fastapi import HTTPException, status
 from app.core.settings import settings
 import httpx
-from enum import Enum
 
-
-class TaskStatus(str, Enum):
-    BACKLOG = "backlog"
-    PROGRESS = "progress"
-    DONE = "done"
-
-
-class Task(BaseModel):
-    id: str
-    title: str
-    description: str
-    status: TaskStatus
+from app.schemas.tasks import Task, TaskStatus
 
 
 async def get_tasks() -> List[Task]:

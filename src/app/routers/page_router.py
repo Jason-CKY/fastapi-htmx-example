@@ -1,8 +1,10 @@
 from typing import Annotated
-from fastapi import APIRouter, Request, Form, Response, status
+from fastapi import APIRouter, Request, Form
 from fastapi.responses import HTMLResponse
 from app.core.settings import templates
 from app.core.db import get_tasks, create_task
+from app.schemas.tasks import TaskStatus
+from loguru import logger
 import shortuuid
 
 
@@ -31,28 +33,31 @@ async def home_page(request: Request):
     )
 
 
-@router.post("/htmx/task", response_class=HTMLResponse)
-async def create_task_fragment(request: Request):
+@router.post("/htmx/task/{status}", response_class=HTMLResponse)
+async def create_task_fragment(request: Request, status: TaskStatus):
     return templates.TemplateResponse(
         "components/edit_task.html",
-        {
-            "request": request,
-            "id": shortuuid.random(length=15),
-        },
+        {"request": request, "id": shortuuid.random(length=15), "status": status.value},
     )
 
 
 @router.put("/htmx/task/{id}", response_class=HTMLResponse)
-async def update_task_fragment(request: Request, id: str):
+async def update_task_fragment(
+    request: Request,
+    id: str,
+    title: Annotated[str, Form()],
+    description: Annotated[str, Form()],
+    status: Annotated[TaskStatus, Form()],
+):
     task = await create_task(
-        title="backend test title",
-        description="backend_test_title",
-        status="progress",
+        title=title,
+        description=description,
+        status=status,
         id=id,
     )
     return templates.TemplateResponse(
         "components/new_task.html",
-        {"request": request, "task": task},
+        {"request": request, "task": task, "status": task.status.value},
     )
 
 
