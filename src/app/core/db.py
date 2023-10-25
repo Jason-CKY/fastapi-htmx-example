@@ -29,6 +29,28 @@ async def get_tasks() -> List[Task]:
     return tasks
 
 
+async def get_task_by_id(id: str) -> Task:
+    async with httpx.AsyncClient() as client:
+        r = await client.get(
+            f"{settings.pb_host}/api/collections/task/records/{id}",
+        )
+    if r.status_code == 404:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    elif r.status_code != 200:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
+        )
+
+    response = r.json()
+    task = Task(
+        id=response["id"],
+        title=response["title"],
+        description=response["description"],
+        status=response["status"],
+    )
+    return task
+
+
 async def delete_task(id: str) -> None:
     async with httpx.AsyncClient() as client:
         r = await client.delete(f"{settings.pb_host}/api/collections/task/records/{id}")
