@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from app.core.settings import templates
-from app.core.db import get_tasks, create_task, delete_task, get_task_by_id
+from app.core.db import get_tasks, create_task, delete_task, get_task_by_id, update_task
 from app.schemas.tasks import TaskStatus
 from loguru import logger
 import shortuuid
@@ -70,15 +70,23 @@ async def update_task_fragment(
     description: Annotated[str, Form()],
     status: Annotated[TaskStatus, Form()],
 ):
-    task = await create_task(
-        title=title,
-        description=description,
-        status=status,
-        id=id,
-    )
+    try:
+        task = await get_task_by_id(id)
+    except HTTPException as e:
+        if e.status_code == 404:
+            updated_task = await create_task(
+                title=title,
+                description=description,
+                status=status,
+                id=id,
+            )
+        else:
+            raise e
+    updated_task = await update_task(id, title, description, status)
+
     return templates.TemplateResponse(
         "components/new_task.html",
-        {"request": request, "task": task, "status": task.status.value},
+        {"request": request, "task": updated_task, "status": updated_task.status.value},
     )
 
 

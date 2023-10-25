@@ -24,7 +24,7 @@
         <div class="flex w-1/4 justify-end">
           <iconify-icon
             class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
-            hx-delete="/htmx/task/{{ id }}"
+            hx-delete="/htmx/task/cancel/{{ id }}"
             hx-target="#card-{{ id }}"
             hx-swap="outerHTML"
             style="color: red"

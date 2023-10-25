@@ -12,6 +12,7 @@ async def get_tasks() -> List[Task]:
             f"{settings.pb_host}/api/collections/task/records",
         )
     if r.status_code != 200:
+        logger.error(str(r.text))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
         )
@@ -37,6 +38,7 @@ async def get_task_by_id(id: str) -> Task:
     if r.status_code == 404:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     elif r.status_code != 200:
+        logger.error(str(r.text))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
         )
@@ -57,10 +59,37 @@ async def delete_task(id: str) -> None:
     if r.status_code == 404:
         return None
     elif r.status_code != 204:
-        logger.critical(r.text)
+        logger.error(str(r.text))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
         )
+
+
+async def update_task(
+    id: str, title: str, description: str, status: TaskStatus
+) -> Task:
+    async with httpx.AsyncClient() as client:
+        r = await client.patch(
+            f"{settings.pb_host}/api/collections/task/records/{id}",
+            json={
+                "title": title,
+                "description": description,
+                "status": status,
+            },
+        )
+    if r.status_code != 200:
+        logger.error(str(r.text))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
+        )
+    response = r.json()
+    task = Task(
+        id=response["id"],
+        title=response["title"],
+        description=response["description"],
+        status=response["status"],
+    )
+    return task
 
 
 async def create_task(
@@ -77,6 +106,7 @@ async def create_task(
             },
         )
     if r.status_code != 200:
+        logger.error(str(r.text))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
         )
