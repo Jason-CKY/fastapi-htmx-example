@@ -6,6 +6,7 @@
     <script src="/static/htmx_1.9.6.min.js"></script>
     <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
     <script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   </head>
   <body class="px-5 pt-2">
     <div class="flex items-center justify-between">
@@ -37,28 +38,23 @@
             <article class="prose mb-5">
               <h1>Backlog</h1>
             </article>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <iconify-icon
+              class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+              icon="icon-park-outline:add"
               width="30"
               height="30"
-              viewBox="0 0 48 48"
-              class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
-            >
-              <g
-                fill="none"
-                stroke="currentColor"
-                stroke-linejoin="round"
-                stroke-width="4"
-              >
-                <rect width="36" height="36" x="6" y="6" rx="3" />
-                <path stroke-linecap="round" d="M24 16v16m-8-8h16" />
-              </g>
-            </svg>
+            ></iconify-icon>
           </div>
           {% for todo in backlog %}
           <div
-            class="card my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+            class="group card relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
           >
+            <iconify-icon
+              class="absolute right-4 top-4 hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+              icon="material-symbols:delete-outline"
+              width="30"
+              height="30"
+            ></iconify-icon>
             <div class="card-body">
               <article class="prose">
                 <h2 class="card-title">{{ todo.title }}</h2>
@@ -78,28 +74,23 @@
             <article class="prose mb-5">
               <h1>In-Progress</h1>
             </article>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <iconify-icon
+              class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+              icon="icon-park-outline:add"
               width="30"
               height="30"
-              viewBox="0 0 48 48"
-              class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
-            >
-              <g
-                fill="none"
-                stroke="currentColor"
-                stroke-linejoin="round"
-                stroke-width="4"
-              >
-                <rect width="36" height="36" x="6" y="6" rx="3" />
-                <path stroke-linecap="round" d="M24 16v16m-8-8h16" />
-              </g>
-            </svg>
+            ></iconify-icon>
           </div>
           {% for todo in inProgress %}
           <div
-            class="card my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+            class="group card relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
           >
+            <iconify-icon
+              class="absolute right-4 top-4 hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+              icon="material-symbols:delete-outline"
+              width="30"
+              height="30"
+            ></iconify-icon>
             <div class="card-body">
               <article class="prose">
                 <h2 class="card-title">{{ todo.title }}</h2>
@@ -119,28 +110,24 @@
             <article class="prose mb-5">
               <h1>Done</h1>
             </article>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <iconify-icon
+              class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+              icon="icon-park-outline:add"
               width="30"
               height="30"
-              viewBox="0 0 48 48"
-              class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
-            >
-              <g
-                fill="none"
-                stroke="currentColor"
-                stroke-linejoin="round"
-                stroke-width="4"
-              >
-                <rect width="36" height="36" x="6" y="6" rx="3" />
-                <path stroke-linecap="round" d="M24 16v16m-8-8h16" />
-              </g>
+            ></iconify-icon>
             </svg>
           </div>
           {% for todo in done %}
           <div
-            class="card my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+            class="group card relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
           >
+            <iconify-icon
+              class="absolute right-4 top-4 hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+              icon="material-symbols:delete-outline"
+              width="30"
+              height="30"
+            ></iconify-icon>
             <div class="card-body">
               <article class="prose">
                 <h2 class="card-title">{{ todo.title }}</h2>
