@@ -1,11 +1,12 @@
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 import httpx
 
-from app.core.settings import settings
+from app.core.settings import settings, templates
 from app.routers import page_router
 from loguru import logger
 
@@ -54,12 +55,20 @@ def custom_docs():
     )
 
 
+@app.get("/", response_class=HTMLResponse)
+async def home_page(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request},
+    )
+
+
 @app.get("/health", include_in_schema=False)
 def healthcheck():
     return {"message": "Healthy!"}
 
 
-app.include_router(page_router.router, tags=["Pages"])
+app.include_router(page_router.router, tags=["Pages"], prefix="/htmx")
 
 # serve all files in /static/*
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"))

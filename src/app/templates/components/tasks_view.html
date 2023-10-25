@@ -1,0 +1,162 @@
+<div class="mt-5 flex w-full">
+    <div class="card rounded-box grid w-[30%] bg-base-300 p-2">
+      <div class="mx-2 flex flex-col">
+        <div class="flex items-center justify-between">
+          <article class="prose mb-5">
+            <h1>Backlog</h1>
+          </article>
+          <iconify-icon
+            class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+            icon="icon-park-outline:add"
+            width="30"
+            height="30"
+            hx-post="/htmx/task/empty/backlog"
+            hx-target="#backlog-list"
+            hx-swap="afterbegin"
+          ></iconify-icon>
+        </div>
+        <div id="backlog-list" class="flex flex-col items-center">
+          {% for task in backlog %}
+          <div
+            id="card-{{ task.id }}"
+            class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+          >
+            <div class="card-body">
+              <article class="prose">
+                <h2 class="card-title justify-between">
+                  <div>
+                    <iconify-icon
+                     class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+                     icon="iconamoon:edit-duotone"
+                     hx-post="/htmx/task/{{ task.id }}"
+                     hx-target="#card-{{ task.id }}"
+                     hx-swap="outerHTML"
+                    ></iconify-icon>
+                    {{ task.title }}
+                  </div>
+                  <iconify-icon
+                  class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+                  icon="material-symbols:delete-outline"
+                  hx-delete="/htmx/task/{{ task.id }}"
+                  hx-target="#card-{{ task.id }}"
+                  hx-swap="outerHTML"
+                  ></iconify-icon>
+                </h2>  
+                <p>{{ task.description }}</p>
+              </article>  
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="divider divider-horizontal"></div>
+
+    <div class="card rounded-box grid w-[30%] bg-base-300 p-2">
+      <div class="mx-2 flex flex-col">
+        <div class="flex items-center justify-between">
+          <article class="prose mb-5">
+            <h1>In-Progress</h1>
+          </article>
+          <iconify-icon
+            class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+            icon="icon-park-outline:add"
+            width="30"
+            height="30"
+            hx-post="/htmx/task/empty/progress"
+            hx-target="#progress-list"
+            hx-swap="afterbegin"
+          ></iconify-icon>
+        </div>
+        <div id="progress-list" class="flex flex-col items-center ">
+          {% for task in inProgress %}
+          <div
+            id="card-{{ task.id }}"
+            class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+          >
+            <div class="card-body">
+              <article class="prose">
+                <h2 class="card-title justify-between">
+                  <div>
+                    <iconify-icon
+                     class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+                     icon="iconamoon:edit-duotone"
+                     hx-post="/htmx/task/{{ task.id }}"
+                     hx-target="#card-{{ task.id }}"
+                     hx-swap="outerHTML"
+                    ></iconify-icon>
+                    {{ task.title }}
+                  </div>
+                  <iconify-icon
+                  class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+                  icon="material-symbols:delete-outline"
+                  hx-delete="/htmx/task/{{ task.id }}"
+                  hx-target="#card-{{ task.id }}"
+                  hx-swap="outerHTML"
+                  ></iconify-icon>
+                </h2>  
+                <p>{{ task.description }}</p>
+              </article>  
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="divider divider-horizontal"></div>
+
+    <div class="card rounded-box grid w-[30%] bg-base-300 p-2">
+      <div class="mx-2 flex flex-col">
+        <div class="flex items-center justify-between">
+          <article class="prose mb-5">
+            <h1>Done</h1>
+          </article>
+          <iconify-icon
+            class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+            icon="icon-park-outline:add"
+            width="30"
+            height="30"
+            hx-post="/htmx/task/empty/done"
+            hx-target="#done-list"
+            hx-swap="afterbegin"
+          ></iconify-icon>
+          </svg>
+        </div>
+        <div id="done-list" class="flex flex-col items-center ">
+          {% for task in done %}
+          <div
+            id="card-{{ task.id }}"
+            class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+          >
+            <div class="card-body">
+              <article class="prose">
+                <h2 class="card-title justify-between line-through">
+                  <div>
+                    <iconify-icon
+                    class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+                    icon="iconamoon:edit-duotone"
+                    hx-post="/htmx/task/{{ task.id }}"
+                    hx-target="#card-{{ task.id }}"
+                    hx-swap="outerHTML"
+                   ></iconify-icon>
+                    {{ task.title }}
+                  </div>
+                  <iconify-icon
+                  class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+                  icon="material-symbols:delete-outline"
+                  hx-delete="/htmx/task/{{ task.id }}"
+                  hx-target="#card-{{ task.id }}"
+                  hx-swap="outerHTML"
+                  ></iconify-icon>
+                </h2>  
+                <p class="line-through">{{ task.description }}</p>
+              </article>  
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</div>

@@ -11,7 +11,7 @@ import shortuuid
 router = APIRouter()
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.get("", response_class=HTMLResponse)
 async def home_page(request: Request):
     tasks = await get_tasks()
     backlog, inProgress, done = [], [], []
@@ -23,7 +23,7 @@ async def home_page(request: Request):
         else:
             done.append(task)
     return templates.TemplateResponse(
-        "index.html",
+        "components/tasks_view.html",
         {
             "request": request,
             "backlog": backlog,
@@ -33,7 +33,7 @@ async def home_page(request: Request):
     )
 
 
-@router.post("/htmx/task/empty/{status}", response_class=HTMLResponse)
+@router.post("/task/empty/{status}", response_class=HTMLResponse)
 async def create_empty_task_fragment(request: Request, status: TaskStatus):
     return templates.TemplateResponse(
         "components/edit_task.html",
@@ -47,7 +47,7 @@ async def create_empty_task_fragment(request: Request, status: TaskStatus):
     )
 
 
-@router.post("/htmx/task/{id}", response_class=HTMLResponse)
+@router.post("/task/{id}", response_class=HTMLResponse)
 async def create_existing_task_fragment(request: Request, id: str):
     task = await get_task_by_id(id)
     return templates.TemplateResponse(
@@ -62,7 +62,7 @@ async def create_existing_task_fragment(request: Request, id: str):
     )
 
 
-@router.put("/htmx/task/{id}", response_class=HTMLResponse)
+@router.put("/task/{id}", response_class=HTMLResponse)
 async def update_task_fragment(
     request: Request,
     id: str,
@@ -90,13 +90,13 @@ async def update_task_fragment(
     )
 
 
-@router.delete("/htmx/task/{id}", response_class=HTMLResponse)
+@router.delete("/task/{id}", response_class=HTMLResponse)
 async def delete_task_fragment(request: Request, id: str):
     await delete_task(id)
     return ""
 
 
-@router.delete("/htmx/task/cancel/{id}", response_class=HTMLResponse)
+@router.delete("/task/cancel/{id}", response_class=HTMLResponse)
 async def delete_task_fragment(request: Request, id: str):
     try:
         task = await get_task_by_id(id)
