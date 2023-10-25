@@ -43,26 +43,34 @@
               icon="icon-park-outline:add"
               width="30"
               height="30"
+              hx-post="/htmx/todo/backlog"
+              hx-target="#backlog-list"
+              hx-swap="afterbegin"
             ></iconify-icon>
           </div>
-          {% for todo in backlog %}
-          <div
-            class="group card relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
-          >
-            <iconify-icon
-              class="absolute right-4 top-4 hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
-              icon="material-symbols:delete-outline"
-              width="30"
-              height="30"
-            ></iconify-icon>
-            <div class="card-body">
-              <article class="prose">
-                <h2 class="card-title">{{ todo.title }}</h2>
-                <p>{{ todo.description }}</p>
-              </article>
+          <div id="backlog-list" class="flex flex-col items-center">
+            {% for todo in backlog %}
+            <div
+              class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+            >
+              <div class="card-body">
+                <article class="prose">
+                  <h2 class="card-title justify-between">
+                    <div>
+                      <iconify-icon class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90" icon="iconamoon:edit-duotone"></iconify-icon>
+                      {{ todo.title }}
+                    </div>
+                    <iconify-icon
+                    class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+                    icon="material-symbols:delete-outline"
+                    ></iconify-icon>
+                  </h2>  
+                  <p>{{ todo.description }}</p>
+                </article>  
+              </div>
             </div>
+            {% endfor %}
           </div>
-          {% endfor %}
         </div>
       </div>
 
@@ -79,26 +87,34 @@
               icon="icon-park-outline:add"
               width="30"
               height="30"
+              hx-post="/htmx/todo/progress"
+              hx-target="#progress-list"
+              hx-swap="afterbegin"
             ></iconify-icon>
           </div>
-          {% for todo in inProgress %}
-          <div
-            class="group card relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
-          >
-            <iconify-icon
-              class="absolute right-4 top-4 hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
-              icon="material-symbols:delete-outline"
-              width="30"
-              height="30"
-            ></iconify-icon>
-            <div class="card-body">
-              <article class="prose">
-                <h2 class="card-title">{{ todo.title }}</h2>
-                <p>{{ todo.description }}</p>
-              </article>
+          <div id="progress-list" class="flex flex-col items-center ">
+            {% for todo in inProgress %}
+            <div
+              class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+            >
+              <div class="card-body">
+                <article class="prose">
+                  <h2 class="card-title justify-between">
+                    <div>
+                      <iconify-icon class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90" icon="iconamoon:edit-duotone"></iconify-icon>
+                      {{ todo.title }}
+                    </div>
+                    <iconify-icon
+                    class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+                    icon="material-symbols:delete-outline"
+                    ></iconify-icon>
+                  </h2>  
+                  <p>{{ todo.description }}</p>
+                </article>  
+              </div>
             </div>
+            {% endfor %}
           </div>
-          {% endfor %}
         </div>
       </div>
 
@@ -115,27 +131,35 @@
               icon="icon-park-outline:add"
               width="30"
               height="30"
+              hx-post="/htmx/todo/done"
+              hx-target="#done-list"
+              hx-swap="afterbegin"
             ></iconify-icon>
             </svg>
           </div>
-          {% for todo in done %}
-          <div
-            class="group card relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
-          >
-            <iconify-icon
-              class="absolute right-4 top-4 hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
-              icon="material-symbols:delete-outline"
-              width="30"
-              height="30"
-            ></iconify-icon>
-            <div class="card-body">
-              <article class="prose">
-                <h2 class="card-title">{{ todo.title }}</h2>
-                <p>{{ todo.description }}</p>
-              </article>
+          <div id="done-list" class="flex flex-col items-center ">
+            {% for todo in done %}
+            <div
+              class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+            >
+              <div class="card-body">
+                <article class="prose">
+                  <h2 class="card-title justify-between line-through">
+                    <div>
+                      <iconify-icon class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90" icon="iconamoon:edit-duotone"></iconify-icon>
+                      {{ todo.title }}
+                    </div>
+                    <iconify-icon
+                    class="place-self-start hidden cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+                    icon="material-symbols:delete-outline"
+                    ></iconify-icon>
+                  </h2>  
+                  <p class="line-through">{{ todo.description }}</p>
+                </article>  
+              </div>
             </div>
+            {% endfor %}
           </div>
-          {% endfor %}
         </div>
       </div>
     </div>

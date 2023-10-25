@@ -29,28 +29,25 @@ async def home_page(request: Request):
     )
 
 
-@router.get("/htmx/todo", response_class=HTMLResponse)
-async def todo_fragment(request: Request):
-    todos = get_tasks()
+@router.post("/htmx/todo/backlog", response_class=HTMLResponse)
+async def create_todo_fragment(request: Request):
     return templates.TemplateResponse(
-        "index.html",
-        {"request": request},
-        block_name="content",
+        "components/task.html",
+        {"request": request, "title": "EMPTY", "description": "FILL IN"},
     )
 
 
-@router.post("/htmx/todo", response_class=HTMLResponse)
-async def create_todo_fragment(request: Request, todo: Annotated[str, Form()]):
-    todos = get_tasks()
-    # create_todo(todo)
+@router.post("/htmx/todo/progress", response_class=HTMLResponse)
+async def create_todo_fragment(request: Request):
     return templates.TemplateResponse(
-        "index.html",
-        {"request": request},
-        block_name="content",
+        "components/task.html",
+        {"request": request, "title": "test", "description": "FILL IN"},
     )
 
 
-@router.delete("/htmx/todo/{id}")
-async def delete_todo_fragment(request: Request, id: int):
-    # delete_todo(id)
-    return Response(status_code=status.HTTP_200_OK)
+@router.post("/htmx/todo/done", response_class=HTMLResponse)
+async def create_todo_fragment(request: Request):
+    return templates.TemplateResponse(
+        "components/task_done.html",
+        {"request": request, "title": "TEST", "description": "FILL IN"},
+    )
