@@ -16,7 +16,7 @@
 
         // Disable sorting on the `end` event
         onEnd: function (evt) {
-          console.log(evt);
+          evt.to.dispatchEvent(evt);
           // this.option("disabled", true);
         },
       });
@@ -43,12 +43,18 @@
           hx-swap="afterbegin"
         ></iconify-icon>
       </div>
-      <div id="backlog-list" class="sortable flex flex-col items-center">
+      <form
+        id="backlog-list"
+        class="sortable flex flex-col items-center"
+        hx-post="/htmx/sort/backlog"
+        hx-trigger="end"
+      >
         {% for task in backlog %}
         <div
           id="card-{{ task.id }}"
           class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
         >
+          <input type="hidden" name="tasks" value="{{ task.id }}" />
           <div class="card-body">
             <article class="prose">
               <h2 class="card-title justify-between">
@@ -75,7 +81,7 @@
           </div>
         </div>
         {% endfor %}
-      </div>
+      </form>
     </div>
   </div>
 
@@ -97,12 +103,18 @@
           hx-swap="afterbegin"
         ></iconify-icon>
       </div>
-      <div id="progress-list" class="sortable flex flex-col items-center">
+      <form
+        id="progress-list"
+        class="sortable flex flex-col items-center"
+        hx-post="/htmx/sort/progress"
+        hx-trigger="end"
+      >
         {% for task in inProgress %}
         <div
           id="card-{{ task.id }}"
           class="card-compact group relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
         >
+          <input type="hidden" name="tasks" value="{{ task.id }}" />
           <div class="card-body">
             <article class="prose">
               <h2 class="card-title justify-between">
@@ -129,7 +141,7 @@
           </div>
         </div>
         {% endfor %}
-      </div>
+      </form>
     </div>
   </div>
 
@@ -151,12 +163,18 @@
           hx-swap="afterbegin"
         ></iconify-icon>
       </div>
-      <div id="done-list" class="sortable flex flex-col items-center">
+      <form
+        id="done-list"
+        class="sortable flex flex-col items-center"
+        hx-post="/htmx/sort/done"
+        hx-trigger="end"
+      >
         {% for task in done %}
         <div
           id="card-{{ task.id }}"
           class="card-compact group relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
         >
+          <input type="hidden" name="tasks" value="{{ task.id }}" />
           <div class="card-body">
             <article class="prose">
               <h2 class="card-title justify-between line-through">
@@ -183,7 +201,7 @@
           </div>
         </div>
         {% endfor %}
-      </div>
+      </form>
     </div>
   </div>
 </div>
