@@ -5,7 +5,6 @@
     <link href="/static/output.css" rel="stylesheet" />
     <script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
     <script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   </head>
@@ -22,12 +21,11 @@
           class="toggle mx-1"
           data-toggle-theme="garden,dracula"
           data-act-class="pl-4"
-          _="on load js 
-            toggleButton = document.getElementById('theme-toggle');
-            htmlElement = document.getElementById('webpage');
-            toggleButton.checked = htmlElement.getAttribute('data-theme') === 'dracula';
-            "
-        />
+        >
+          <script>
+            document.getElementById('theme-toggle').checked = localStorage.getItem('theme') === 'dracula';
+          </script>
+        </input>
         🌚
       </div>
     </div>
