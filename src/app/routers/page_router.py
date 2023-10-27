@@ -2,7 +2,14 @@ from typing import Annotated
 from fastapi import APIRouter, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from app.core.settings import templates
-from app.core.db import get_tasks, create_task, delete_task, get_task_by_id, update_task
+from app.core.db import (
+    get_tasks,
+    create_task,
+    delete_task,
+    get_task_by_id,
+    update_task,
+    update_tasks_order,
+)
 from app.schemas.tasks import TaskStatus
 from loguru import logger
 import shortuuid
@@ -13,15 +20,43 @@ router = APIRouter()
 
 @router.get("", response_class=HTMLResponse)
 async def home_page(request: Request):
-    tasks = await get_tasks()
+    tasks, order = await get_tasks()
     backlog, inProgress, done = [], [], []
-    for task in tasks:
-        if task.status == "backlog":
-            backlog.append(task)
-        elif task.status == "progress":
-            inProgress.append(task)
-        else:
-            done.append(task)
+    backlog_order = (
+        order[TaskStatus.BACKLOG] if order[TaskStatus.BACKLOG] is not None else []
+    )
+    progress_order = (
+        order[TaskStatus.PROGRESS] if order[TaskStatus.PROGRESS] is not None else []
+    )
+    done_order = order[TaskStatus.DONE] if order[TaskStatus.DONE] is not None else []
+
+    if len(backlog_order) + len(progress_order) + len(done_order) != len(tasks):
+        logger.critical("SOMETHING IS WRONG")
+        for task in tasks:
+            if task.status == "backlog":
+                backlog.append(task)
+            elif task.status == "progress":
+                inProgress.append(task)
+            else:
+                done.append(task)
+        await update_tasks_order(backlog, inProgress, done)
+
+    else:
+        while len(backlog_order) + len(progress_order) + len(done_order) != 0:
+            if len(backlog_order) > 0:
+                backlog.append(
+                    [task for task in tasks if task.id == backlog_order[0]][0]
+                )
+                backlog_order = backlog_order[1:]
+            if len(progress_order) > 0:
+                inProgress.append(
+                    [task for task in tasks if task.id == progress_order[0]][0]
+                )
+                progress_order = progress_order[1:]
+            if len(done_order) > 0:
+                done.append([task for task in tasks if task.id == done_order[0]][0])
+                done_order = done_order[1:]
+
     return templates.TemplateResponse(
         "components/tasks_view.html",
         {
