@@ -3,32 +3,12 @@
   class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
 >
   <div class="card-body">
-    {% if status == "done" %}
     <article class="prose">
+      {% if status == "done" %}
       <h2 class="card-title justify-between line-through">
-        <div>
-          <iconify-icon
-            class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
-            icon="iconamoon:edit-duotone"
-            hx-post="/htmx/task/{{ task.id }}"
-            hx-target="#card-{{ task.id }}"
-            hx-swap="outerHTML"
-          ></iconify-icon>
-          {{ task.title }}
-        </div>
-        <iconify-icon
-          class="hidden cursor-pointer place-self-start hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
-          icon="material-symbols:delete-outline"
-          hx-delete="/htmx/task/{{ task.id }}"
-          hx-target="#card-{{ task.id }}"
-          hx-swap="outerHTML"
-        ></iconify-icon>
-      </h2>
-      <p class="line-through">{{ task.description }}</p>
-    </article>
-    {% else %}
-    <article class="prose">
+      {% else %}
       <h2 class="card-title justify-between">
+      {% endif %}
         <div>
           <iconify-icon
             class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
@@ -47,8 +27,11 @@
           hx-swap="outerHTML"
         ></iconify-icon>
       </h2>
+      {% if status == "done" %}
+      <p class="line-through">{{ task.description }}</p>
+      {% else %}
       <p>{{ task.description }}</p>
+      {% endif %}
     </article>
-    {% endif %}
   </div>
 </div>
