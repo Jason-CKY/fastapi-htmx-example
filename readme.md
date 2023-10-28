@@ -10,13 +10,6 @@ make build-dev
 make initialize-db
 ```
 
-Or you can install from source:
-
-```python
-pip install -r ./build/requirements.txt
-uvicorn app.main:app --reload
-```
-
 ## Format on save
 
 Refer to this [link](https://www.digitalocean.com/community/tutorials/how-to-format-code-with-prettier-in-visual-studio-code) on how to install and set prettier to format on save.
