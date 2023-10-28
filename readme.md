@@ -6,6 +6,8 @@ You can either start up using `docker-compose`:
 
 ```sh
 make build-dev
+# make sure directus is up on http://localhost:8055
+make initialize-db
 ```
 
 Or you can install from source:

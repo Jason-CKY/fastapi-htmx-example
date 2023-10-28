@@ -65,3 +65,21 @@ stop:		## bring down all hosted services
 .PHONY: destroy
 destroy:		## Bring down all hosted services with their volumes
 	docker-compose down -v
+
+
+.PHONY: build-tables
+build-tables:		## initialize tables in directus for the app
+	bash ./src/directus/build-tables.sh
+
+.PHONY: seed-data
+seed-data:		## seed initial data in directus for the app
+	bash ./src/directus/seed-data.sh
+
+.PHONY: set-permissions
+set-permissions:		## set public access permissions for fastapi to perform CRUD unauthenticated
+	bash ./src/directus/set-permissions.sh
+
+
+.PHONY: initialize-db
+initialize-db: build-tables seed-data set-permissions		## create service account, build-tables and seed data
+	

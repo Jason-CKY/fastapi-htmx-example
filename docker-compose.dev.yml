@@ -9,22 +9,29 @@ services:
       target: dev
     container_name: htmx
     environment:
-      PB_HOST: ${PB_HOST}
-      PB_ADMIN_USERNAME: ${PB_ADMIN_USERNAME}
-      PB_ADMIN_PASSWORD: ${PB_ADMIN_PASSWORD}
+      directus_host: http://directus:8055
     ports:
       - 8000:80
     volumes:
       - ./src/app:/app/app
 
-  pocketbase:
-    build:
-      context: .
-      dockerfile: ./build/pocketbase/Dockerfile
-    container_name: pocketbase
-    volumes:
-      - ./src/pb/pb_migrations:/app/data/pb_migrations
-      - ./src/pb/pb_public:/app/data/pb_public
-      - ./src/pb/pb_data:/app/data/pb_data
+  directus:
+    image: directus/directus:10.7.1
+    container_name: directus
     ports:
-      - "8090:8090"
+      - 8055:8055
+    volumes:
+      - directus_database:/directus/database
+      - directus_uploads:/directus/uploads
+    environment:
+      KEY: "replace-with-random-value"
+      SECRET: "replace-with-random-value"
+      ADMIN_EMAIL: "admin@example.com"
+      ADMIN_PASSWORD: "d1r3ctu5"
+      DB_CLIENT: "sqlite3"
+      DB_FILENAME: "/directus/database/data.db"
+      WEBSOCKETS_ENABLED: true
+
+volumes:
+  directus_database:
+  directus_uploads:

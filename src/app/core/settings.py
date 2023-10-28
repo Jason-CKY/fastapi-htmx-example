@@ -23,9 +23,7 @@ class Settings(BaseSettings):
         "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css",
     )
 
-    pb_host: str
-    pb_admin_username: str
-    pb_admin_password: str
+    directus_host: str
 
 
 settings = Settings()

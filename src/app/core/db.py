@@ -2,6 +2,7 @@ from typing import List, Tuple, Dict
 from fastapi import HTTPException, status
 from app.core.settings import settings
 import httpx
+import json
 import asyncio
 from loguru import logger
 from app.schemas.tasks import Task, TaskStatus, TaskSort
@@ -10,7 +11,7 @@ from app.schemas.tasks import Task, TaskStatus, TaskSort
 async def get_tasks() -> Tuple[List[Task], Dict[str, List[str]]]:
     async with httpx.AsyncClient() as client:
         r = await client.get(
-            f"{settings.pb_host}/api/collections/task/records",
+            f"{settings.directus_host}/items/task",
         )
     if r.status_code != 200:
         logger.error(str(r.text))
@@ -19,7 +20,7 @@ async def get_tasks() -> Tuple[List[Task], Dict[str, List[str]]]:
         )
     response = r.json()
     tasks = []
-    for item in response["items"]:
+    for item in response["data"]:
         task = Task(
             id=item["id"],
             title=item["title"],
@@ -30,7 +31,7 @@ async def get_tasks() -> Tuple[List[Task], Dict[str, List[str]]]:
 
     async with httpx.AsyncClient() as client:
         r = await client.get(
-            f"{settings.pb_host}/api/collections/task_sorting/records",
+            f"{settings.directus_host}/items/task_sorting",
         )
     if r.status_code != 200:
         logger.error(str(r.text))
@@ -40,13 +41,13 @@ async def get_tasks() -> Tuple[List[Task], Dict[str, List[str]]]:
 
     response = r.json()
     order = {TaskStatus.BACKLOG: [], TaskStatus.PROGRESS: [], TaskStatus.DONE: []}
-    for item in response["items"]:
+    for item in response["data"]:
         if item["status"] == TaskStatus.BACKLOG:
-            order[TaskStatus.BACKLOG] = item["sorting_order"]
+            order[TaskStatus.BACKLOG] = json.loads(item["sorting_order"])
         elif item["status"] == TaskStatus.PROGRESS:
-            order[TaskStatus.PROGRESS] = item["sorting_order"]
+            order[TaskStatus.PROGRESS] = json.loads(item["sorting_order"])
         elif item["status"] == TaskStatus.DONE:
-            order[TaskStatus.DONE] = item["sorting_order"]
+            order[TaskStatus.DONE] = json.loads(item["sorting_order"])
 
     return tasks, order
 
@@ -54,17 +55,21 @@ async def get_tasks() -> Tuple[List[Task], Dict[str, List[str]]]:
 async def get_task_by_id(id: str) -> Task:
     async with httpx.AsyncClient() as client:
         r = await client.get(
-            f"{settings.pb_host}/api/collections/task/records/{id}",
+            f"{settings.directus_host}/items/task?filter[id][_eq]={id}",
         )
-    if r.status_code == 404:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    elif r.status_code != 200:
+    if r.status_code != 200:
+        logger.error(r.status_code)
         logger.error(str(r.text))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
         )
 
-    response = r.json()
+    response = r.json()["data"]
+
+    if len(response) == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+    response = response[0]
     task = Task(
         id=response["id"],
         title=response["title"],
@@ -77,7 +82,7 @@ async def get_task_by_id(id: str) -> Task:
 async def delete_task(id: str) -> None:
     task = await get_task_by_id(id)
     async with httpx.AsyncClient() as client:
-        r = await client.delete(f"{settings.pb_host}/api/collections/task/records/{id}")
+        r = await client.delete(f"{settings.directus_host}/items/task/{id}")
     if r.status_code == 404:
         return None
     elif r.status_code != 204:
@@ -98,7 +103,7 @@ async def update_task(
 ) -> Task:
     async with httpx.AsyncClient() as client:
         r = await client.patch(
-            f"{settings.pb_host}/api/collections/task/records/{id}",
+            f"{settings.directus_host}/items/task/{id}",
             json={
                 "title": title,
                 "description": description,
@@ -110,7 +115,7 @@ async def update_task(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
         )
-    response = r.json()
+    response = r.json()["data"]
     task = Task(
         id=response["id"],
         title=response["title"],
@@ -125,7 +130,7 @@ async def create_task(
 ) -> Task:
     async with httpx.AsyncClient() as client:
         r = await client.post(
-            f"{settings.pb_host}/api/collections/task/records",
+            f"{settings.directus_host}/items/task",
             json={
                 "id": id,
                 "title": title,
@@ -138,7 +143,7 @@ async def create_task(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
         )
-    response = r.json()
+    response = r.json()["data"]
     task = Task(
         id=response["id"],
         title=response["title"],
@@ -155,19 +160,19 @@ async def create_task(
 async def get_task_order(status: TaskStatus) -> TaskSort:
     async with httpx.AsyncClient() as client:
         r = await client.get(
-            f"{settings.pb_host}/api/collections/task_sorting/records?filter=(status='{status.value}')",
+            f"{settings.directus_host}/items/task_sorting?filter[status][_eq]={status.value}",
         )
     if r.status_code != 200:
         logger.error(str(r.text))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(r.text)
         )
-    response = r.json()
+    response = r.json()["data"]
     return TaskSort(
-        id=response["items"][0]["id"],
-        status=response["items"][0]["status"],
-        sorting_order=response["items"][0]["sorting_order"]
-        if response["items"][0]["sorting_order"] is not None
+        id=response[0]["id"],
+        status=response[0]["status"],
+        sorting_order=json.loads(response[0]["sorting_order"])
+        if response[0]["sorting_order"] is not None
         else [],
     )
 
@@ -175,7 +180,7 @@ async def get_task_order(status: TaskStatus) -> TaskSort:
 async def update_task_order(id: str, sorting_order: List[str]) -> None:
     async with httpx.AsyncClient() as client:
         r = await client.patch(
-            f"{settings.pb_host}/api/collections/task_sorting/records/{id}",
+            f"{settings.directus_host}/items/task_sorting/{id}",
             json={"sorting_order": sorting_order},
         )
     if r.status_code != 200:

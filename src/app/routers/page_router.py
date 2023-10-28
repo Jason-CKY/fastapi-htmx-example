@@ -12,8 +12,7 @@ from app.core.db import (
 )
 from app.schemas.tasks import TaskStatus
 from loguru import logger
-import shortuuid
-
+from uuid import uuid4
 
 router = APIRouter()
 
@@ -29,7 +28,6 @@ async def home_page(request: Request):
         order[TaskStatus.PROGRESS] if order[TaskStatus.PROGRESS] is not None else []
     )
     done_order = order[TaskStatus.DONE] if order[TaskStatus.DONE] is not None else []
-
     if len(backlog_order) + len(progress_order) + len(done_order) != len(tasks):
         logger.critical("SOMETHING IS WRONG")
         for task in tasks:
@@ -74,7 +72,7 @@ async def create_empty_task_fragment(request: Request, status: TaskStatus):
         "components/edit_task.html",
         {
             "request": request,
-            "id": shortuuid.random(length=15),
+            "id": str(uuid4()),
             "status": status.value,
             "title": "",
             "description": "",
