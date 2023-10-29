@@ -40,7 +40,7 @@ curl -X POST -H "Content-Type: application/json" \
 
 curl -X POST -H "Content-Type: application/json" \
     -H "Authorization: Bearer $ADMIN_ACCESS_TOKEN" \
-    -d '{"field":"sorting_order","type":"string","schema":{},"meta":{"interface":"input-code","special":null,"options":{"language":"JSON","template":"[\n\t\"id-1\",\n    \"id-2\"\n]"},"required":true},"collection":"task_sorting"}' \
+    -d '{"field":"sorting_order","type":"json","schema":{},"meta":{"interface":"input-code","special":["cast-json"],"required":true},"collection":"task_sorting"}' \
     localhost:8055/fields/task_sorting \
 
 

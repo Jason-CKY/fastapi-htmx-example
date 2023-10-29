@@ -1,0 +1,49 @@
+<form
+  id="{{ status }}-list"
+  class="sortable flex flex-col items-center"
+  hx-post="/htmx/sort/{{ status }}"
+  hx-trigger="end"
+  hx-target="#{{ status }}-list"
+  hx-swap="outerHTML"
+>
+  {% for task in tasks %}
+  <div
+    id="card-{{ task.id }}"
+    class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
+  >
+    <input type="hidden" name="task_ids" value="{{ task.id }}" />
+    <div class="card-body">
+      <article class="prose">
+        {% if task.status == "done" %}
+        <h2 class="card-title justify-between line-through">
+        {% else %}
+        <h2 class="card-title justify-between">
+        {% endif %}
+          <div>
+            <iconify-icon
+              class="cursor-pointer hover:brightness-90 active:scale-[95%] active:brightness-90"
+              icon="iconamoon:edit-duotone"
+              hx-post="/htmx/task/{{ task.id }}"
+              hx-target="#card-{{ task.id }}"
+              hx-swap="outerHTML"
+            ></iconify-icon>
+            {{ task.title }}
+          </div>
+          <iconify-icon
+            class="hidden cursor-pointer place-self-start hover:brightness-90 active:scale-[95%] active:brightness-90 group-hover:block"
+            icon="material-symbols:delete-outline"
+            hx-delete="/htmx/task/{{ task.id }}"
+            hx-target="#card-{{ task.id }}"
+            hx-swap="outerHTML"
+          ></iconify-icon>
+        </h2>
+        {% if task.status == "done" %}
+        <p class="line-through">{{ task.description }}</p>
+        {% else %}
+        <p>{{ task.description }}</p>
+        {% endif %}
+      </article>
+    </div>
+  </div>
+  {% endfor %}
+</form>

@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, List
 from fastapi import APIRouter, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from app.core.settings import templates
@@ -9,6 +9,8 @@ from app.core.db import (
     get_task_by_id,
     update_task,
     update_tasks_order,
+    update_task_order,
+    update_tasks_status,
 )
 from app.schemas.tasks import TaskStatus
 from loguru import logger
@@ -101,7 +103,7 @@ async def update_task_fragment(
     id: str,
     title: Annotated[str, Form()],
     description: Annotated[str, Form()],
-    status: Annotated[TaskStatus, Form()],
+    status: Annotated[str, Form()],
 ):
     try:
         _ = await get_task_by_id(id)
@@ -141,4 +143,21 @@ async def delete_task_fragment(request: Request, id: str):
     return templates.TemplateResponse(
         "components/new_task.html",
         {"request": request, "task": task, "status": task.status.value},
+    )
+
+
+import asyncio
+
+
+@router.post("/sort/{status}", response_class=HTMLResponse)
+async def update_task_sorting(
+    request: Request, status: TaskStatus, task_ids: Annotated[List[str], Form()]
+):
+    # await asyncio.sleep(10)
+    await update_task_order(status=status, sorting_order=task_ids)
+    tasks = await update_tasks_status(task_ids, status)
+
+    return templates.TemplateResponse(
+        "components/task_list.html",
+        {"request": request, "tasks": tasks, "status": status.value},
     )

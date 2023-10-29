@@ -2,6 +2,7 @@
   id="card-{{ task.id }}"
   class="group card-compact relative my-2 w-[80%] place-self-center bg-base-100 shadow-xl"
 >
+  <input type="hidden" name="task_ids" value="{{ task.id }}" />
   <div class="card-body">
     <article class="prose">
       {% if status == "done" %}
