@@ -20,6 +20,8 @@ sudo mv ./tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 
 ## Features
 
+![Screen Recording of todo app demo](https://github.com/Jason-CKY/fastapi-htmx-example/assets/27609953/9519a6ea-a5e4-407d-8a29-dcdd76bc2857)
+
 * [FastAPI](https://fastapi.tiangolo.com/) web server that serves html on htmx endpoints
 * [HTMX](https://htmx.org/) for interactivity, minimal js needed
 * [DaisyUI](daisyui.com/) with [theme-changing library](https://github.com/saadeghi/theme-change) for CSS styling and themes
