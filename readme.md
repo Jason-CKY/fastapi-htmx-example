@@ -24,6 +24,7 @@ https://github.com/Jason-CKY/fastapi-htmx-example/assets/27609953/9519a6ea-a5e4-
 
 * [FastAPI](https://fastapi.tiangolo.com/) web server that serves html on htmx endpoints
 * [HTMX](https://htmx.org/) for interactivity, minimal js needed
+* Lazy loading with HTMX
 * [DaisyUI](daisyui.com/) with [theme-changing library](https://github.com/saadeghi/theme-change) for CSS styling and themes
 * [SortableJS](https://github.com/SortableJS/Sortable) for drag and drop of tasks (sorting and updates)
 * [Directus](https://directus.io/) for headless CMS and API routes for CRUD operations
