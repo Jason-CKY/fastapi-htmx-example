@@ -17,7 +17,6 @@
 
           // Disable sorting on the `end` event
           onEnd: function (evt) {
-            // console.log(evt);
             if (evt.from !== evt.to) {
               evt.to.dispatchEvent(evt);
             }
