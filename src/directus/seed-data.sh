@@ -13,3 +13,22 @@ for i in {0..8}; do
     -d "$DATA" \
     localhost:8055/items/task
 done
+
+
+curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $ADMIN_ACCESS_TOKEN" \
+    -d  '{"status":"backlog","sorting_order":"[]"}'\
+    localhost:8055/items/task_sorting
+
+curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $ADMIN_ACCESS_TOKEN" \
+    -d  '{"status":"progress","sorting_order":"[]"}'\
+    localhost:8055/items/task_sorting
+
+curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $ADMIN_ACCESS_TOKEN" \
+    -d  '{"status":"done","sorting_order":"[]"}'\
+    localhost:8055/items/task_sorting
