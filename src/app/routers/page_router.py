@@ -146,14 +146,10 @@ async def delete_task_fragment(request: Request, id: str):
     )
 
 
-import asyncio
-
-
 @router.post("/sort/{status}", response_class=HTMLResponse)
 async def update_task_sorting(
     request: Request, status: TaskStatus, task_ids: Annotated[List[str], Form()]
 ):
-    # await asyncio.sleep(10)
     await update_task_order(status=status, sorting_order=task_ids)
     tasks = await update_tasks_status(task_ids, status)
 
