@@ -15,11 +15,11 @@ lint:			## Lint check
 
 .PHONY: build-css
 build-css:		## use tailwind cli to build out output css
-	tailwindcss -i ./build/fastapi/input.css -o ./src/app/static/output.css
+	npx tailwindcss -i ./build/fastapi/input.css -o ./src/app/static/output.css
 
 .PHONY: watch-css
 watch-css: 		## set css build into watch mode for development
-	tailwindcss -i ./build/fastapi/input.css -o ./src/app/static/output.css --watch
+	npx tailwindcss -i ./build/fastapi/input.css -o ./src/app/static/output.css --watch
 
 .PHONY: format
 format:			## Format code in place to conform to lint check

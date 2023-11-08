@@ -4,19 +4,7 @@
 
 * docker (docker-desktop if you are using windows)
 * docker-compose (comes with docker-desktop, but can install [here](https://docs.docker.com/compose/install/standalone/) if you are not on windows)
-* [tailwindcss](#installing-tailwindcss-cli)
 * [Node LTS v18](https://nodejs.org/en/download)
-
-### Installing tailwindcss cli
-
-This projects uses tailwindcss cli to convert tailwindcss files.
-Refer to [docs](https://tailwindcss.com/blog/standalone-cli) on how to install standalone tailwindcss cli.
-
-```sh
-wget https://github.com/tailwindlabs/tailwindcss/releases/download/v3.3.5/tailwindcss-linux-x64
-sudo chmod +x ./tailwindcss-linux-x64
-sudo mv ./tailwindcss-linux-x64 /usr/local/bin/tailwindcss
-```
 
 ## Features
 
